@@ -6,6 +6,7 @@ import swal from "sweetalert";
 import {
   cartItems,
   updateCartQty,
+  updateCartValue,
 } from "../../redux/features/product/foodSlice";
 import { useDispatch } from "react-redux";
 
@@ -37,6 +38,13 @@ const FoodDetails = () => {
         cart.map((item) => item.quantity).reduce((a, b) => a + b, 0)
       )
     );
+    dispatch(
+      updateCartValue(
+        cart
+          .map((item) => item.price * item.quantity)
+          .reduce((a, b) => a + b, 0)
+      )
+    );
     swal("Wow!!!", "Your order has added to the cart", "success");
   };
 
@@ -45,7 +53,8 @@ const FoodDetails = () => {
       <div className="flex flex-col justify-center items-center h-screen">
         <div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10"
-          key={selectedItem.id}>
+          key={selectedItem.id}
+        >
           {/* left side  */}
           <div className="order-2 md:order-1 lg:order-1 flex flex-col justify-center">
             <h1 className="text-center md:text-left lg:text-left text-3xl lg:text-4xl font-semibold poppins pb-4 text-gray-700 select-none">
@@ -90,7 +99,8 @@ const FoodDetails = () => {
                     ? "opacity-30 flex items-center space-x-3 bg-primary px-6 py-3 text-white poppins rounded-full ring-red-300 focus:outline-none focus:ring-4 transform transition duration-700 hover:scale-105"
                     : "flex items-center space-x-3 bg-primary px-6 py-3 text-white poppins rounded-full ring-red-300 focus:outline-none focus:ring-4 transform transition duration-700 hover:scale-105"
                 }
-                onClick={cartHandler}>
+                onClick={cartHandler}
+              >
                 <BsCart2 className="text-xl" />
                 <span>{disabled ? "Added" : "Add to Cart"}</span>
               </button>

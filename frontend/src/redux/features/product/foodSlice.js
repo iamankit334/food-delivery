@@ -30,9 +30,13 @@ const foodSlice = createSlice({
     updateCartQty: (state, action) => {
       state.cartQty = action.payload;
     },
+    updateCartValue: (state, action) => {
+      state.cartValue = action.payload;
+    },
   },
 });
 
-export const { selectedItem, cartItems, updateCartQty } = foodSlice.actions;
+export const { selectedItem, cartItems, updateCartQty, updateCartValue } =
+  foodSlice.actions;
 
 export default foodSlice.reducer;

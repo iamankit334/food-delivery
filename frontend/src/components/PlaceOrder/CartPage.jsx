@@ -6,20 +6,27 @@ import OrderPrice from "../PlaceOrder/OrderPrice";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
 import DeliveryForm from "./DeliveryForm";
+import {
+  updateCartQty,
+  updateCartValue,
+  cartItems,
+} from "../../redux/features/product/foodSlice";
 
 const CartPage = () => {
-  const cartItems = useSelector((state) => state.food.cart);
+  const cartItem = useSelector((state) => state.food.cart);
   const address = useSelector((state) => state.order.address);
   const addressLength = JSON.stringify(address).length;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(cartItems);
+  // console.log(cartItems);
+
   const orderHandler = () => {
-    swal("Congratulations!!!", `order placed successfully`, "success");
     localStorage.removeItem("cart");
-    localStorage.removeItem("address");
     dispatch(cartItems({}));
+    dispatch(updateCartQty(0));
+    dispatch(updateCartValue(0));
     navigate("/");
+    swal("Congratulations!!!", `order placed successfully`, "success");
   };
 
   return (
@@ -27,9 +34,10 @@ const CartPage = () => {
       className="h-screen banner"
       style={{
         backgroundImage: `url(${headerbanner})`,
-      }}>
+      }}
+    >
       <div className="max-w-screen-xl py-20 mx-auto px-6">
-        {cartItems.length > 0 ? (
+        {cartItem.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
               {/* left side form  */}
@@ -69,7 +77,7 @@ const CartPage = () => {
                   {/* orders  */}
 
                   <div className=" flex flex-col space-y-3 h-64 overflow-y-scroll orderContainer ">
-                    {cartItems.map((item) => (
+                    {cartItem.map((item) => (
                       <OrderCard key={item.id} {...item} />
                     ))}
                   </div>
@@ -79,9 +87,10 @@ const CartPage = () => {
                   {/* place order button  */}
                   <div>
                     <button
-                      disabled={cartItems.length === 0 || addressLength < 3}
+                      disabled={addressLength < 3}
                       className="w-full px-6 py-3 rounded-lg bg-primary text-white poppins ring-red-300 focus:ring-4 transition duration-500"
-                      onClick={orderHandler}>
+                      onClick={orderHandler}
+                    >
                       {addressLength < 3 ? "address not added" : "Place Order"}
                     </button>
                   </div>

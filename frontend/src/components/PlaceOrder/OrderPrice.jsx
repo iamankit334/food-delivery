@@ -2,7 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const OrderPrice = () => {
-  const allPrice = useSelector((state) => state.food.cartValue);
+  //----------------------------------------------
+  const allPrice = useSelector((state) => state.food.cartValue || 0);
   const subTotal = parseFloat(allPrice.toFixed(2));
   const tax = parseFloat((allPrice % 5).toFixed(2));
   const deliveryFee = parseFloat((allPrice % 20).toFixed(2));
